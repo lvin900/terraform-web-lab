@@ -1,0 +1,33 @@
+# GitHub Actions workflow: checks the Terraform code on every push and pull request.
+# Runs formatting and validation only, so it needs no AWS credentials.
+
+name: Terraform checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: fmt and validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+
+      - name: Initialise (no backend, no AWS access needed)
+        run: terraform init -backend=false
+
+      - name: Validate configuration
+        run: terraform validate

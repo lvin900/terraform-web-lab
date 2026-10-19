@@ -1,0 +1,18 @@
+# Terraform working files - never commit these
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Access key downloads - never commit credentials
+*accessKeys*.csv
+*.csv
+
+# Note: DO commit .terraform.lock.hcl (it pins provider versions)
