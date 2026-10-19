@@ -26,7 +26,7 @@ provider "aws" {
     tags = {
       Project   = "terraform-web-lab"
       ManagedBy = "Terraform"
-      Owner     = "Lime"
+      Owner     = "lemuel"
     }
   }
 }
@@ -131,12 +131,13 @@ resource "aws_instance" "web" {
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.web.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    dnf install -y httpd
-    echo "<h1>Hello from Terraform</h1><p>Built by Lemuel on AWS.</p>" > /var/www/html/index.html
-    systemctl enable --now httpd
-  EOF
+  # The page (with the contact form) is built from a template; Terraform fills in the API URL.
+  user_data = templatefile("${path.module}/web/user_data.sh.tpl", {
+    api_url = aws_apigatewayv2_api.contact.api_endpoint
+  })
+
+  # User Data only runs on first boot, so replace the instance when the page changes.
+  user_data_replace_on_change = true
 
   # Require IMDSv2 (session tokens for instance metadata): a common security baseline.
   metadata_options {
