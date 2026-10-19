@@ -16,3 +16,5 @@ override.tf.json
 *.csv
 
 # Note: DO commit .terraform.lock.hcl (it pins provider versions)
+
+build/
