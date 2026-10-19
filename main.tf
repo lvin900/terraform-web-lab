@@ -26,7 +26,7 @@ provider "aws" {
     tags = {
       Project   = "terraform-web-lab"
       ManagedBy = "Terraform"
-      Owner = "Lime"
+      Owner     = "Lime"
     }
   }
 }
